@@ -1,4 +1,6 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 const valores = [
   { label: 'Sostenible', icono: '🌿' },
   { label: 'Local', icono: '📍' },
@@ -26,7 +28,7 @@ const valores = [
 
           <!-- TODO: Reemplazar con fotografía real de la creadora o del proceso artesanal (500x600px) -->
           <img
-            src="/images/placeholder-historia.jpg"
+            src={`${base}images/placeholder-historia.jpg`}
             alt="Artesana de Soju Creaciones tejiendo manillas a mano en su taller en Cali, Colombia"
             width="500"
             height="600"
