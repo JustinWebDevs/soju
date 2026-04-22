@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import TrustBar from '../components/TrustBar.astro';
+import Catalogo from '../components/Catalogo.astro';
+import ComoComprar from '../components/ComoComprar.astro';
+import NuestraHistoria from '../components/NuestraHistoria.astro';
+import Galeria from '../components/Galeria.astro';
+import Testimonios from '../components/Testimonios.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import '../styles/global.css';
+---
+
+<Layout>
+  <Navbar />
+  <main>
+    <Hero />
+    <TrustBar />
+    <Catalogo limite={6} />
+    <ComoComprar />
+    <NuestraHistoria />
+    <Galeria />
+    <Testimonios />
+    <FAQ />
+  </main>
+  <Footer />
+  <WhatsAppButton />
+</Layout>

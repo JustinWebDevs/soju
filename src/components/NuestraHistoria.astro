@@ -1,0 +1,90 @@
+---
+const valores = [
+  { label: 'Sostenible', icono: '🌿' },
+  { label: 'Local', icono: '📍' },
+  { label: 'Hecho a mano', icono: '🤲' },
+  { label: 'Con amor', icono: '❤️' },
+];
+---
+
+<section id="historia" class="py-20 px-6 lg:px-12 bg-blanco-roto overflow-hidden">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <!-- Imagen lado izquierdo -->
+      <div data-reveal class="relative order-2 lg:order-1 flex justify-center lg:justify-start">
+        <div class="relative">
+          <!-- Decoración -->
+          <div
+            class="absolute -bottom-6 -right-6 w-48 h-48 rounded-full border-2 border-tierra/15"
+            aria-hidden="true"
+          ></div>
+          <div
+            class="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-crema/80"
+            aria-hidden="true"
+          ></div>
+
+          <!-- TODO: Reemplazar con fotografía real de la creadora o del proceso artesanal (500x600px) -->
+          <img
+            src="/images/placeholder-historia.jpg"
+            alt="Artesana de Soju Creaciones tejiendo manillas a mano en su taller en Cali, Colombia"
+            width="500"
+            height="600"
+            loading="lazy"
+            class="relative z-10 rounded-2xl object-cover shadow-xl w-full max-w-sm lg:max-w-md"
+            style="background-color: #DDD0C0;"
+          />
+
+          <!-- Sticker fecha -->
+          <div class="absolute z-20 top-6 -right-4 lg:-right-8 bg-tierra text-blanco-roto rounded-xl px-4 py-3 shadow-lg rotate-2">
+            <p class="font-playfair text-2xl font-bold leading-none">+3</p>
+            <p class="font-inter text-xs mt-0.5 opacity-80">años creando</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto lado derecho -->
+      <div class="order-1 lg:order-2 flex flex-col gap-6">
+
+        <div data-reveal>
+          <span class="font-inter text-tierra text-sm font-medium tracking-widest uppercase">Nuestra historia</span>
+        </div>
+
+        <h2 data-reveal data-reveal-delay="100" class="font-playfair text-4xl lg:text-5xl text-marron font-semibold leading-tight">
+          Manos que tejen,<br/>
+          <em class="not-italic text-tierra">alma que crea</em>
+        </h2>
+
+        <div data-reveal data-reveal-delay="200" class="flex flex-col gap-4">
+          <p class="font-inter text-marron/70 text-base leading-relaxed">
+            Todo comenzó con un hilo y una historia que contar. En Cali, entre música, colores y el ritmo del Pacífico, nació Soju Creaciones: un proyecto de amor que convierte horas de tejido en piezas que viajan contigo.
+          </p>
+          <p class="font-inter text-marron/70 text-base leading-relaxed">
+            Cada manilla es un fragmento de memoria — del viaje que tomaste, del momento que querías guardar, de la persona que amas. No fabricamos en serie. No usamos máquinas. Cada nudo lo damos nosotros, uno por uno, con la paciencia que merece algo que vas a usar cada día.
+          </p>
+          <p class="font-inter text-marron/70 text-base leading-relaxed">
+            Hoy llegamos a toda Colombia, pero nuestra esencia sigue siendo la misma: una ciudad, unas manos, y el deseo genuino de que lo que te pongas te haga sentir algo.
+          </p>
+        </div>
+
+        <!-- Valores / badges -->
+        <div data-reveal data-reveal-delay="300" class="flex flex-wrap gap-3 pt-2">
+          {valores.map((v) => (
+            <span class="inline-flex items-center gap-2 bg-crema border border-tierra/20 text-marron font-inter text-sm font-medium px-4 py-2 rounded-full">
+              <span>{v.icono}</span>
+              {v.label}
+            </span>
+          ))}
+        </div>
+
+        <!-- Firma -->
+        <div data-reveal data-reveal-delay="400" class="pt-4 border-t border-crema">
+          <p class="font-playfair text-tierra italic text-lg">
+            "Cada pieza lleva un pedacito de Cali."
+          </p>
+          <p class="font-inter text-marron/50 text-sm mt-1">— Fundadora, Soju Creaciones</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,302 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props { limite?: number }
+const { limite } = Astro.props;
+
+const WA_NUMBER = '573194969305';
+
+const todosProductos = await getCollection('productos');
+const productosAMostrar = limite ? todosProductos.slice(0, limite) : todosProductos;
+
+// Categorías únicas en el orden que aparecen en el enum del schema
+const ordenCategorias = ['macramé', 'chaquiras', 'cuero', 'mixtas', 'cuarzos'];
+const categoriasPresentes = ordenCategorias.filter((cat) =>
+  todosProductos.some((p) => p.data.categoria === cat)
+);
+const categorias = ['todas', ...categoriasPresentes];
+
+const formatPrecio = (n: number) =>
+  '$' + new Intl.NumberFormat('es-CO').format(n);
+
+const buildWaMsg = (titulo: string) =>
+  encodeURIComponent(`Hola Soju Creaciones! Me interesa la manilla "${titulo}", ¿está disponible? 😊`);
+---
+
+<section id="coleccion" class="py-20 px-6 lg:px-12 bg-blanco-roto">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div data-reveal class="text-center mb-12 flex flex-col items-center gap-3">
+      <span class="font-inter text-tierra text-sm font-medium tracking-widest uppercase">Colección</span>
+      <h2 class="font-playfair text-4xl lg:text-5xl text-marron font-semibold">
+        Diseños que cuentan historias
+      </h2>
+      <p class="font-inter text-marron/60 text-base max-w-lg leading-relaxed">
+        Cada pieza es única, tejida con paciencia y con el color de nuestra tierra colombiana.
+      </p>
+    </div>
+
+    <!-- Filtros (solo en página completa, no en vista previa de landing) -->
+    {!limite && categorias.length > 1 && (
+      <div data-reveal class="flex flex-wrap justify-center gap-2 mb-10">
+        {categorias.map((cat) => (
+          <button
+            class="filtro-btn font-inter text-sm font-medium px-5 py-2 rounded-full border transition-all duration-200 capitalize"
+            data-categoria={cat}
+          >
+            {cat === 'todas' ? 'Todas' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <!-- Grid de productos -->
+    {todosProductos.length === 0 ? (
+      <p class="text-center font-inter text-marron/50 py-20">
+        Próximamente productos disponibles.
+      </p>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="productos-grid">
+        {productosAMostrar.map((producto) => {
+          const { titulo, descripcion, precio, categoria, imagen, imagenes } = producto.data;
+          const imagenSrc = `/images/productos/${imagen}`;
+          const tieneGaleria = imagenes && imagenes.length > 0;
+
+          return (
+            <article
+              class="producto-card group bg-white rounded-2xl overflow-hidden border border-crema hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              data-categoria={categoria}
+              data-reveal
+            >
+              <!-- Imagen principal -->
+              <div class="relative overflow-hidden aspect-square bg-crema">
+                <img
+                  src={imagenSrc}
+                  alt={`${titulo} — manilla artesanal Soju Creaciones`}
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  style="background-color: #EDE5D8;"
+                />
+                <!-- Badge categoría -->
+                <span class="absolute top-3 left-3 bg-blanco-roto/90 backdrop-blur-sm text-tierra text-xs font-inter font-medium px-3 py-1 rounded-full capitalize">
+                  {categoria}
+                </span>
+                <!-- Indicador de galería -->
+                {tieneGaleria && (
+                  <span class="absolute top-3 right-3 bg-marron/70 text-blanco-roto text-xs font-inter px-2 py-1 rounded-full flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {(imagenes?.length ?? 0) + 1}
+                  </span>
+                )}
+              </div>
+
+              <!-- Info -->
+              <div class="p-5 flex flex-col gap-3">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="font-playfair text-marron text-lg font-semibold leading-snug">
+                    {titulo}
+                  </h3>
+                  <span class="font-inter text-tierra font-semibold text-base whitespace-nowrap flex-shrink-0">
+                    {formatPrecio(precio)}
+                  </span>
+                </div>
+
+                <p class="font-inter text-marron/55 text-sm leading-relaxed line-clamp-3">
+                  {descripcion}
+                </p>
+
+                {categoria !== 'cuarzos' && (
+                  <p class="font-inter text-tierra/70 text-xs">
+                    Ajustable a tu mano · Detalles en Acero · Totalmente personalizable
+                  </p>
+                )}
+
+                <!-- Botones -->
+                <div class="flex gap-2 mt-1">
+                  {tieneGaleria && (
+                    <button
+                      class="ver-fotos-btn flex-shrink-0 border border-tierra/30 hover:border-tierra text-tierra font-inter text-sm px-3 py-2.5 rounded-full transition-colors duration-200"
+                      data-titulo={titulo}
+                      data-imagen={imagenSrc}
+                      data-imagenes={JSON.stringify([imagenSrc, ...(imagenes ?? []).map(fn => `/images/productos/${fn}`)])}
+                      aria-label={`Ver fotos de ${titulo}`}
+                    >
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                    </button>
+                  )}
+                  <a
+                    href={`https://wa.me/${WA_NUMBER}?text=${buildWaMsg(titulo)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 flex items-center justify-center gap-2 bg-oliva hover:bg-oliva/90 text-blanco-roto font-inter font-medium text-sm py-2.5 px-4 rounded-full transition-all duration-200"
+                  >
+                    <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Pedir este diseño
+                  </a>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    )}
+
+    <!-- Botón ver catálogo completo (solo en landing con limite activo) -->
+    {limite && todosProductos.length > limite && (
+      <div data-reveal class="text-center mt-12">
+        <a
+          href="/catalogo"
+          class="inline-flex items-center gap-2 border-2 border-marron text-marron hover:bg-marron hover:text-blanco-roto font-inter font-medium text-sm px-8 py-3 rounded-full transition-all duration-200"
+        >
+          Ver toda la colección
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- Lightbox de galería por producto -->
+<dialog class="lightbox" id="galeria-lightbox" aria-label="Galería del producto">
+  <div class="relative flex flex-col items-center gap-4">
+    <!-- Imagen principal lightbox -->
+    <div class="relative">
+      <img id="galeria-img-principal" src="" alt="" class="rounded-lg shadow-2xl" />
+      <button
+        id="galeria-prev"
+        aria-label="Foto anterior"
+        class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-blanco-roto/90 text-marron flex items-center justify-center shadow hover:bg-crema transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button
+        id="galeria-next"
+        aria-label="Foto siguiente"
+        class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-blanco-roto/90 text-marron flex items-center justify-center shadow hover:bg-crema transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <!-- Título y contador -->
+    <div class="flex items-center gap-3">
+      <span id="galeria-titulo" class="font-playfair text-blanco-roto text-sm"></span>
+      <span id="galeria-contador" class="font-inter text-blanco-roto/50 text-xs"></span>
+    </div>
+    <!-- Miniaturas -->
+    <div id="galeria-thumbs" class="flex gap-2 flex-wrap justify-center"></div>
+    <!-- Cerrar -->
+    <button
+      id="galeria-close"
+      aria-label="Cerrar galería"
+      class="absolute -top-4 -right-4 w-9 h-9 rounded-full bg-blanco-roto text-marron flex items-center justify-center shadow-md hover:bg-crema transition-colors"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+</dialog>
+
+<script>
+  // ── Filtros ──────────────────────────────────────────
+  const filtros = document.querySelectorAll<HTMLButtonElement>('.filtro-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.producto-card');
+
+  const ACTIVO = { backgroundColor: '#3D2B1F', color: '#FAF8F4', borderColor: '#3D2B1F' };
+  const INACTIVO = { backgroundColor: 'transparent', color: '#3D2B1F', borderColor: 'rgba(196,149,106,0.25)' };
+
+  const applyStyle = (el: HTMLElement, style: typeof ACTIVO) => {
+    Object.assign(el.style, style);
+  };
+
+  // Activar "Todas" por defecto
+  filtros.forEach((btn, i) => {
+    applyStyle(btn, i === 0 ? ACTIVO : INACTIVO);
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.categoria!;
+      filtros.forEach((b) => applyStyle(b, INACTIVO));
+      applyStyle(btn, ACTIVO);
+      cards.forEach((card) => {
+        card.style.display = (cat === 'todas' || card.dataset.categoria === cat) ? '' : 'none';
+      });
+    });
+  });
+
+  // ── Lightbox galería por producto ───────────────────
+  const lightbox = document.getElementById('galeria-lightbox') as HTMLDialogElement;
+  const imgPrincipal = document.getElementById('galeria-img-principal') as HTMLImageElement;
+  const tituloEl = document.getElementById('galeria-titulo')!;
+  const contadorEl = document.getElementById('galeria-contador')!;
+  const thumbsEl = document.getElementById('galeria-thumbs')!;
+  const prevBtn = document.getElementById('galeria-prev')!;
+  const nextBtn = document.getElementById('galeria-next')!;
+  const closeBtn = document.getElementById('galeria-close')!;
+
+  let imagenes: string[] = [];
+  let actual = 0;
+
+  const mostrarFoto = (index: number) => {
+    actual = index;
+    imgPrincipal.src = imagenes[index];
+    contadorEl.textContent = `${index + 1} / ${imagenes.length}`;
+    thumbsEl.querySelectorAll<HTMLElement>('.thumb').forEach((t, i) => {
+      t.style.opacity = i === index ? '1' : '0.5';
+      t.style.outline = i === index ? '2px solid #C4956A' : 'none';
+    });
+    prevBtn.style.display = imagenes.length > 1 ? '' : 'none';
+    nextBtn.style.display = imagenes.length > 1 ? '' : 'none';
+  };
+
+  const abrirGaleria = (titulo: string, imgs: string[]) => {
+    imagenes = imgs;
+    tituloEl.textContent = titulo;
+    thumbsEl.innerHTML = '';
+
+    imgs.forEach((src, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.alt = `Foto ${i + 1} de ${titulo}`;
+      thumb.className = 'thumb w-12 h-12 object-cover rounded-lg cursor-pointer transition-all';
+      thumb.style.opacity = '0.5';
+      thumb.addEventListener('click', () => mostrarFoto(i));
+      thumbsEl.appendChild(thumb);
+    });
+
+    mostrarFoto(0);
+    lightbox.showModal();
+    document.body.style.overflow = 'hidden';
+  };
+
+  const cerrar = () => {
+    lightbox.close();
+    document.body.style.overflow = '';
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.ver-fotos-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const titulo = btn.dataset.titulo!;
+      const imgs: string[] = JSON.parse(btn.dataset.imagenes!);
+      abrirGaleria(titulo, imgs);
+    });
+  });
+
+  prevBtn.addEventListener('click', () => mostrarFoto((actual - 1 + imagenes.length) % imagenes.length));
+  nextBtn.addEventListener('click', () => mostrarFoto((actual + 1) % imagenes.length));
+  closeBtn.addEventListener('click', cerrar);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) cerrar(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.open) return;
+    if (e.key === 'Escape') cerrar();
+    if (e.key === 'ArrowLeft') mostrarFoto((actual - 1 + imagenes.length) % imagenes.length);
+    if (e.key === 'ArrowRight') mostrarFoto((actual + 1) % imagenes.length);
+  });
+</script>

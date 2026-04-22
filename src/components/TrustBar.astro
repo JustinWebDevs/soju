@@ -1,0 +1,76 @@
+---
+const stats = [
+  { prefix: '+', value: 500, suffix: '', label: 'clientes felices' },
+  { prefix: '', value: 100, suffix: '%', label: 'hecho a mano' },
+  { prefix: '', value: 32, suffix: '', label: 'departamentos con envío' },
+  { prefix: '+', value: 3, suffix: ' años', label: 'creando contigo' },
+];
+---
+
+<section class="bg-marron py-14 px-6 overflow-hidden">
+  <div class="max-w-5xl mx-auto">
+    <div
+      id="trust-bar"
+      class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4"
+    >
+      {stats.map((stat, i) => (
+        <div
+          data-reveal
+          class={`flex flex-col items-center text-center gap-1 ${i < stats.length - 1 ? 'lg:border-r lg:border-crema/10' : ''}`}
+        >
+          <div class="flex items-baseline gap-0.5">
+            <span class="font-inter text-tierra text-sm font-medium">{stat.prefix}</span>
+            <span
+              class="font-playfair text-4xl lg:text-5xl font-semibold text-blanco-roto counter"
+              data-target={stat.value}
+              data-prefix={stat.prefix}
+              data-suffix={stat.suffix}
+            >
+              0
+            </span>
+            <span class="font-inter text-tierra text-sm font-medium">{stat.suffix}</span>
+          </div>
+          <p class="font-inter text-crema/60 text-sm tracking-wide uppercase">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const trustBar = document.getElementById('trust-bar')!;
+  let animated = false;
+
+  const animateCounters = () => {
+    if (animated) return;
+    animated = true;
+
+    const counters = trustBar.querySelectorAll<HTMLElement>('.counter');
+    counters.forEach((counter) => {
+      const target = parseInt(counter.dataset.target || '0');
+      const duration = 1800;
+      const step = target / (duration / 16);
+      let current = 0;
+
+      const tick = () => {
+        current = Math.min(current + step, target);
+        counter.textContent = Math.round(current).toString();
+        if (current < target) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    });
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        observer.disconnect();
+      }
+    },
+    { threshold: 0.3 }
+  );
+
+  observer.observe(trustBar);
+</script>

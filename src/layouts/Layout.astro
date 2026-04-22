@@ -1,0 +1,126 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title = 'Soju Creaciones | Manillas Artesanales Colombianas Hechas a Mano',
+  description = 'Descubre Soju Creaciones, manillas artesanales hechas a mano en Colombia. Macramé, chaquiras, cuero y más. Pedidos por WhatsApp con envío a todo el país.',
+  ogImage = '/images/og-image.jpg',
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const productos = [
+  { name: 'Manilla Macramé Bohemia', url: 'https://sojucreaciones.com/#coleccion', price: '18000', currency: 'COP' },
+  { name: 'Pulsera de Chaquiras Muisca', url: 'https://sojucreaciones.com/#coleccion', price: '22000', currency: 'COP' },
+  { name: 'Manilla Cuero Vintage', url: 'https://sojucreaciones.com/#coleccion', price: '25000', currency: 'COP' },
+  { name: 'Trenza Mixta Caleña', url: 'https://sojucreaciones.com/#coleccion', price: '20000', currency: 'COP' },
+  { name: 'Espiral de Chaquiras Caribe', url: 'https://sojucreaciones.com/#coleccion', price: '24000', currency: 'COP' },
+  { name: 'Manilla Macramé Natural', url: 'https://sojucreaciones.com/#coleccion', price: '16000', currency: 'COP' },
+];
+
+const schemaLocalBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Soju Creaciones',
+  description,
+  url: 'https://sojucreaciones.com',
+  telephone: '+573194969305',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Cali',
+    addressRegion: 'Valle del Cauca',
+    addressCountry: 'CO',
+  },
+  sameAs: [
+    'https://www.instagram.com/sojucreaciones',
+    'https://www.tiktok.com/@sojucreaciones',
+  ],
+};
+
+const schemaItemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Colección Soju Creaciones',
+  itemListElement: productos.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Product',
+      name: p.name,
+      url: p.url,
+      offers: {
+        '@type': 'Offer',
+        price: p.price,
+        priceCurrency: p.currency,
+        availability: 'https://schema.org/InStock',
+      },
+    },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Soju Creaciones" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaLocalBusiness)} />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
+  </head>
+  <body>
+    <slot />
+
+    <!-- Scroll reveal global -->
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>

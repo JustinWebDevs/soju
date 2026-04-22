@@ -1,0 +1,118 @@
+---
+const WA_NUMBER = '573194969305';
+const WA_MSG = encodeURIComponent('Hola Soju Creaciones! Quiero conocer su colección de manillas artesanales 😊');
+const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+---
+
+<section class="relative min-h-screen texture-lino flex items-center pt-20 overflow-hidden">
+  <!-- Decoración fondo sutil -->
+  <div class="absolute top-0 right-0 w-2/3 h-full bg-crema/40 pointer-events-none hidden lg:block" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-tierra/5 -translate-x-1/2 translate-y-1/2 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
+
+    <!-- Columna izquierda: texto -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Badge animado -->
+      <div
+        data-reveal
+        class="inline-flex items-center gap-2 self-start bg-tierra/10 border border-tierra/20 text-tierra text-sm font-inter font-medium px-4 py-2 rounded-full animate-badge-float"
+      >
+        <span class="text-base leading-none">🇨🇴</span>
+        Hecho a mano en Colombia
+      </div>
+
+      <!-- Headline -->
+      <h1
+        data-reveal
+        data-reveal-delay="100"
+        class="font-playfair text-4xl sm:text-5xl lg:text-6xl font-semibold text-marron leading-tight tracking-tight"
+      >
+        Cada manilla cuenta una historia
+        <em class="not-italic text-tierra"> colombiana</em>
+      </h1>
+
+      <!-- Subtítulo -->
+      <p
+        data-reveal
+        data-reveal-delay="200"
+        class="font-inter text-lg text-marron/70 leading-relaxed max-w-lg"
+      >
+        Creadas con hilo, tiempo y amor desde Cali. Cada pieza lleva el alma de manos artesanas que tejen identidad, cultura y memoria en cada nudo.
+      </p>
+
+      <!-- Botones CTA -->
+      <div
+        data-reveal
+        data-reveal-delay="300"
+        class="flex flex-wrap gap-4"
+      >
+        <a
+          href="#coleccion"
+          class="inline-flex items-center gap-2 bg-marron hover:bg-marron/90 text-blanco-roto font-inter font-medium text-sm px-6 py-3.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+        >
+          Ver colección
+        </a>
+        <a
+          href="#como-pedir"
+          class="inline-flex items-center gap-2 border border-marron/30 hover:border-tierra text-marron hover:text-tierra font-inter font-medium text-sm px-6 py-3.5 rounded-full transition-all duration-200"
+        >
+          Cómo funciona
+        </a>
+      </div>
+
+      <!-- Indicadores de confianza pequeños -->
+      <div
+        data-reveal
+        data-reveal-delay="400"
+        class="flex flex-wrap gap-4 pt-2"
+      >
+        <div class="flex items-center gap-1.5 text-sm text-marron/60 font-inter">
+          <span class="w-1.5 h-1.5 rounded-full bg-oliva inline-block"></span>
+          Envíos a toda Colombia
+        </div>
+        <div class="flex items-center gap-1.5 text-sm text-marron/60 font-inter">
+          <span class="w-1.5 h-1.5 rounded-full bg-oliva inline-block"></span>
+          Personalización disponible
+        </div>
+        <div class="flex items-center gap-1.5 text-sm text-marron/60 font-inter">
+          <span class="w-1.5 h-1.5 rounded-full bg-oliva inline-block"></span>
+          Pedidos por WhatsApp
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: imagen -->
+    <div data-reveal data-reveal-delay="200" class="relative flex justify-center lg:justify-end">
+      <div class="relative">
+        <!-- Marco decorativo -->
+        <div class="absolute -top-4 -left-4 w-full h-full border-2 border-tierra/20 rounded-2xl" aria-hidden="true"></div>
+
+        <!-- TODO: Reemplazar con imagen real del producto hero (600x700px, fotografía editorial de manillas) -->
+        <img
+          src="/images/placeholder-hero.jpg"
+          alt="Colección de manillas artesanales Soju Creaciones — macramé, chaquiras y cuero hechas a mano en Cali, Colombia"
+          width="600"
+          height="700"
+          loading="eager"
+          class="relative rounded-2xl object-cover w-full max-w-md lg:max-w-full shadow-xl"
+          style="background-color: #E8DDD0;"
+        />
+
+        <!-- Sticker sobre la imagen -->
+        <div class="absolute -bottom-4 -left-4 lg:-left-8 bg-blanco-roto border border-crema rounded-xl px-4 py-3 shadow-lg">
+          <p class="font-playfair text-marron text-sm font-semibold">+500 clientes felices</p>
+          <p class="font-inter text-marron/60 text-xs mt-0.5">en toda Colombia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flecha scroll down -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-tierra/50 animate-bounce hidden md:block" aria-hidden="true">
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
+</section>
