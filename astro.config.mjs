@@ -7,5 +7,6 @@ export default defineConfig({
     tailwind({ applyBaseStyles: false }),
     icon(),
   ],
-  site: 'https://sojucreaciones.com',
+  site: 'https://JustinWebDevs.github.io/soju',
+  base: '/soju',
 });
