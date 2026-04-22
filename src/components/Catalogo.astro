@@ -16,6 +16,8 @@ const categoriasPresentes = ordenCategorias.filter((cat) =>
 );
 const categorias = ['todas', ...categoriasPresentes];
 
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 const formatPrecio = (n: number) =>
   '$' + new Intl.NumberFormat('es-CO').format(n);
 
@@ -60,7 +62,7 @@ const buildWaMsg = (titulo: string) =>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="productos-grid">
         {productosAMostrar.map((producto) => {
           const { titulo, descripcion, precio, categoria, imagen, imagenes } = producto.data;
-          const imagenSrc = `/images/productos/${imagen}`;
+          const imagenSrc = `${base}images/productos/${imagen}`;
           const tieneGaleria = imagenes && imagenes.length > 0;
 
           return (
@@ -123,7 +125,7 @@ const buildWaMsg = (titulo: string) =>
                       class="ver-fotos-btn flex-shrink-0 border border-tierra/30 hover:border-tierra text-tierra font-inter text-sm px-3 py-2.5 rounded-full transition-colors duration-200"
                       data-titulo={titulo}
                       data-imagen={imagenSrc}
-                      data-imagenes={JSON.stringify([imagenSrc, ...(imagenes ?? []).map(fn => `/images/productos/${fn}`)])}
+                      data-imagenes={JSON.stringify([imagenSrc, ...(imagenes ?? []).map(fn => `${base}images/productos/${fn}`)])}
                       aria-label={`Ver fotos de ${titulo}`}
                     >
                       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -154,7 +156,7 @@ const buildWaMsg = (titulo: string) =>
     {limite && todosProductos.length > limite && (
       <div data-reveal class="text-center mt-12">
         <a
-          href="/catalogo"
+          href={`${base}catalogo`}
           class="inline-flex items-center gap-2 border-2 border-marron text-marron hover:bg-marron hover:text-blanco-roto font-inter font-medium text-sm px-8 py-3 rounded-full transition-all duration-200"
         >
           Ver toda la colección

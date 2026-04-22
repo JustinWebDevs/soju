@@ -5,11 +5,13 @@ const WA_NUMBER = '573194969305';
 const WA_MSG = encodeURIComponent('Hola Soju Creaciones! Quiero conocer su colección de manillas artesanales 😊');
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 const links = [
-  { label: 'Colección', href: '/#coleccion' },
-  { label: 'Nuestra Historia', href: '/#historia' },
-  { label: 'Cómo Pedir', href: '/#como-pedir' },
-  { label: 'Contacto', href: '/#contacto' },
+  { label: 'Colección', href: `${base}#coleccion` },
+  { label: 'Nuestra Historia', href: `${base}#historia` },
+  { label: 'Cómo Pedir', href: `${base}#como-pedir` },
+  { label: 'Contacto', href: `${base}#contacto` },
 ];
 ---
 
@@ -17,7 +19,7 @@ const links = [
   <div class="max-w-7xl mx-auto flex items-center justify-between">
 
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 group">
+    <a href={base} class="flex items-center gap-2 group">
       <span class="text-tierra group-hover:text-marron transition-colors duration-200">
         <Icon name="lucide:leaf" class="w-6 h-6" />
       </span>

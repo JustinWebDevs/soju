@@ -91,7 +91,7 @@ const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 
         <!-- TODO: Reemplazar con imagen real del producto hero (600x700px, fotografía editorial de manillas) -->
         <img
-          src="/images/placeholder-hero.jpg"
+          src={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}images/placeholder-hero.jpg`}
           alt="Colección de manillas artesanales Soju Creaciones — macramé, chaquiras y cuero hechas a mano en Cali, Colombia"
           width="600"
           height="700"

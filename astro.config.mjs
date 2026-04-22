@@ -8,5 +8,5 @@ export default defineConfig({
     icon(),
   ],
   site: 'https://JustinWebDevs.github.io/soju',
-  base: '/soju',
+  base: process.env.GITHUB_ACTIONS === 'true' ? '/soju' : '/',
 });
